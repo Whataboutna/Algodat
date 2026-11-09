@@ -12,3 +12,4 @@ public class Main {
         antrean.dequeue();
         antrean.tampilkan();
 }
+}
