@@ -1,16 +1,24 @@
 public class SelectionSort {
-    public static void sort(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n - 1; i++) {
-            int minIdx = i;
-            for (int j = i + 1; j < n; j++) {
-                if (arr[j] < arr[minIdx]) {
-                    minIdx = j;
+    public static void sort(LinkedList list) {
+        Node curr = list.getHead();
+
+        while (curr != null) {
+            Node minNode = curr;
+            Node nextNode = curr.getNext();
+
+            while (nextNode != null) {
+                if (nextNode.getValue() < minNode.getValue()) {
+                    minNode = nextNode;
                 }
+                nextNode = nextNode.getNext();
             }
-            int temp = arr[minIdx];
-            arr[minIdx] = arr[i];
-            arr[i] = temp;
+
+            // Tukar nilai
+            int temp = curr.getValue();
+            curr.setValue(minNode.getValue());
+            minNode.setValue(temp);
+
+            curr = curr.getNext();
         }
     }
 }

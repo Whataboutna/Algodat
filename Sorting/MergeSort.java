@@ -1,33 +1,46 @@
 public class MergeSort {
-    public static void sort(int[] arr, int left, int right) {
-        if (left < right) {
-            int mid = left + (right - left) / 2;
-            sort(arr, left, mid);
-            sort(arr, mid + 1, right);
-            merge(arr, left, mid, right);
-        }
+    public static void sort(LinkedList list) {
+        list.setHead(mergeSort(list.getHead()));
     }
 
-    private static void merge(int[] arr, int left, int mid, int right) {
-        int n1 = mid - left + 1;
-        int n2 = right - mid;
-
-        int[] L = new int[n1];
-        int[] R = new int[n2];
-
-        for (int i = 0; i < n1; i++) L[i] = arr[left + i];
-        for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
-
-        int i = 0, j = 0, k = left;
-        while (i < n1 && j < n2) {
-            if (L[i] <= R[j]) {
-                arr[k++] = L[i++];
-            } else {
-                arr[k++] = R[j++];
-            }
+    private static Node mergeSort(Node head) {
+        if (head == null || head.getNext() == null) {
+            return head;
         }
 
-        while (i < n1) arr[k++] = L[i++];
-        while (j < n2) arr[k++] = R[j++];
+        Node middle = getMiddle(head);
+        Node nextOfMiddle = middle.getNext();
+        middle.setNext(null);
+
+        Node left = mergeSort(head);
+        Node right = mergeSort(nextOfMiddle);
+
+        return merge(left, right);
+    }
+
+    private static Node merge(Node left, Node right) {
+        if (left == null) return right;
+        if (right == null) return left;
+
+        Node result;
+        if (left.getValue() <= right.getValue()) {
+            result = left;
+            result.setNext(merge(left.getNext(), right));
+        } else {
+            result = right;
+            result.setNext(merge(left, right.getNext()));
+        }
+        return result;
+    }
+
+    private static Node getMiddle(Node head) {
+        if (head == null) return head;
+        Node slow = head, fast = head;
+
+        while (fast.getNext() != null && fast.getNext().getNext() != null) {
+            slow = slow.getNext();
+            fast = fast.getNext().getNext();
+        }
+        return slow;
     }
 }

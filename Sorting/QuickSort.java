@@ -1,28 +1,58 @@
 public class QuickSort {
-    public static void sort(int[] arr, int low, int high) {
-        if (low < high) {
-            int pi = partition(arr, low, high);
-            sort(arr, low, pi - 1);
-            sort(arr, pi + 1, high);
+    public static void sort(LinkedList list) {
+        Node head = list.getHead();
+        if (head == null || head.getNext() == null) return;
+
+        Node tail = getTail(head);
+        quickSort(head, tail);
+    }
+
+    private static void quickSort(Node start, Node end) {
+        if (start == null || start == end || start == end.getNext()) {
+            return;
+        }
+
+        Node pivotPrev = partition(start, end);
+        quickSort(start, pivotPrev);
+
+        if (pivotPrev != null && pivotPrev == start) {
+            quickSort(pivotPrev.getNext(), end);
+        } else if (pivotPrev != null && pivotPrev.getNext() != null) {
+            quickSort(pivotPrev.getNext().getNext(), end);
         }
     }
 
-    private static int partition(int[] arr, int low, int high) {
-        int pivot = arr[high];
-        int i = low - 1;
-
-        for (int j = low; j < high; j++) {
-            if (arr[j] < pivot) {
-                i++;
-                int temp = arr[i];
-                arr[i] = arr[j];
-                arr[j] = temp;
-            }
+    private static Node partition(Node start, Node end) {
+        if (start == end || start == null || end == null) {
+            return start;
         }
-        int temp = arr[i + 1];
-        arr[i + 1] = arr[high];
-        arr[high] = temp;
 
-        return i + 1;
+        Node pivotPrev = start;
+        Node curr = start;
+        int pivot = end.getValue();
+
+        while (start != end) {
+            if (start.getValue() < pivot) {
+                pivotPrev = curr;
+                int temp = curr.getValue();
+                curr.setValue(start.getValue());
+                start.setValue(temp);
+                curr = curr.getNext();
+            }
+            start = start.getNext();
+        }
+
+        int temp = curr.getValue();
+        curr.setValue(pivot);
+        end.setValue(temp);
+
+        return pivotPrev;
+    }
+
+    private static Node getTail(Node curr) {
+        while (curr != null && curr.getNext() != null) {
+            curr = curr.getNext();
+        }
+        return curr;
     }
 }

@@ -1,17 +1,26 @@
 public class BubbleSort {
-    public static void sort(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n - 1; i++) {
-            boolean swapped = false;
-            for (int j = 0; j < n - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
+    public static void sort(LinkedList list) {
+        Node head = list.getHead();
+        if (head == null || head.getNext() == null) return;
+
+        boolean swapped;
+        Node end = null;
+
+        do {
+            swapped = false;
+            Node curr = head;
+
+            while (curr.getNext() != end) {
+                Node nextNode = curr.getNext();
+                if (curr.getValue() > nextNode.getValue()) {
+                    int temp = curr.getValue();
+                    curr.setValue(nextNode.getValue());
+                    nextNode.setValue(temp);
                     swapped = true;
                 }
+                curr = curr.getNext();
             }
-            if (!swapped) break;
-        }
+            end = curr;
+        } while (swapped);
     }
 }
