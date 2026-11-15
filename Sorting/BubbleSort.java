@@ -11,7 +11,7 @@ public class BubbleSort {
                     swapped = true;
                 }
             }
-            if (!swapped) break; // Berhenti lebih awal jika sudah terurut
+            if (!swapped) break;
         }
     }
 }
